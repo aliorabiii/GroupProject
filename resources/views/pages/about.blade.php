@@ -60,7 +60,7 @@ https://templatemo.com/tm-586-scholar
               <li class="nav-item"><a class="nav-link" href="Features.html">Features</a></li>
               <li class="nav-item"><a class="nav-link" href="Services.html">Services</a></li>
               <li class="nav-item"><a class="nav-link" href="Testimonials.html">Testimonials</a></li>
-              <li class="nav-item"><a class="nav-link" href="Contact.html">Contact Us</a></li>
+              <li class="nav-item"><a class="nav-link" href="Contact.html"></a></li>
             </ul>
           </div>
 
