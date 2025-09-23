@@ -122,7 +122,7 @@ https://templatemo.com/tm-586-scholar
 
         <!-- Main Title -->
         <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
-          With <span class="text-warning">IWaiter</span>, mjd
+          With <span class="text-warning">IWaiter</span>, mjdb
         </h1>
 
         <!-- Subtitle -->
