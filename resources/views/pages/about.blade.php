@@ -30,7 +30,7 @@ https://templatemo.com/tm-586-scholar
 -->
   </head>
 
-<body class="bg-dark">
+<body class="bg-success">
 
  
   <!-- ***** Preloader End ***** -->
