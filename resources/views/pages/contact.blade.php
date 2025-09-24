@@ -9,24 +9,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Scholar - Online School HTML5 Template</title>
+    <title>IWaiter</title>
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+
 
     <!-- Bootstrap core CSS -->
- <!-- Bootstrap core CSS -->
-<link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<!-- Additional CSS Files -->
-<link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}">
+
+
+
+
+
+    <!-- Additional CSS Files -->
+   <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/templatemo-scholar.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
 <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
+<!--
 
+TemplateMo 586 Scholar
 
+https://templatemo.com/tm-586-scholar
+
+-->
   </head>
 
 <body>
@@ -50,12 +60,25 @@
           <!-- Menu -->
           <div class="collapse navbar-collapse justify-content-end" id="navMenu">
             <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-              <li class="nav-item"><a class="nav-link" href="Features.html">Features</a></li>
-              <li class="nav-item"><a class="nav-link" href="Services.html">Services</a></li>
-              <li class="nav-item"><a class="nav-link" href="Testimonials.html">Testimonials</a></li>
-              <li class="nav-item"><a class="nav-link" href="Contact.html">Contact Us</a></li>
+             <li class="nav-item">
+    <a class="nav-link {{ Request::is('index') ? 'active' : '' }}" href="{{ url('index') }}">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About Us</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('features') ? 'active' : '' }}" href="{{ url('/features') }}">Features</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ url('/services') }}">Services</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('testimonials') ? 'active' : '' }}" href="{{ url('/testimonials') }}">Testimonials</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact Us</a>
+</li>
+
             </ul>
           </div>
 
@@ -64,6 +87,21 @@
     </div>
   </div>
 </header>
+
+<!-- Add some CSS -->
+<style>
+.header-area .nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.header-area .nav-link:hover,
+.header-area .nav-link.active {
+  color: #ffc107 !important; /* Bootstrap warning color */
+}
+.hero-banner {
+  padding-top: 80px; /* To prevent navbar overlap */
+}
+</style>
 <body>
     
 

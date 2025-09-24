@@ -8,6 +8,9 @@ use App\Http\Controllers\RoleController;
 
 use App\Http\Controllers\AboutController;
 
+
+
+
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/about/edit', [AboutController::class, 'edit'])->name('about.edit');
 Route::post('/about/update', [AboutController::class, 'update'])->name('about.update');

@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Scholar - Online School HTML5 Template</title>
+    <title>IWaiter</title>
+    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
+
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -71,12 +73,25 @@ https://templatemo.com/tm-586-scholar
           <!-- Menu -->
           <div class="collapse navbar-collapse justify-content-end" id="navMenu">
             <ul class="navbar-nav mb-2 mb-lg-0">
-              <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-              <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-              <li class="nav-item"><a class="nav-link" href="Features.html">Features</a></li>
-              <li class="nav-item"><a class="nav-link" href="Services.html">Services</a></li>
-              <li class="nav-item"><a class="nav-link" href="Testimonials.html">Testimonials</a></li>
-              <li class="nav-item"><a class="nav-link" href="Contact.html">Contact Us</a></li>
+             <li class="nav-item">
+    <a class="nav-link {{ Request::is('index') ? 'active' : '' }}" href="{{ url('index') }}">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="{{ url('/about') }}">About Us</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('features') ? 'active' : '' }}" href="{{ url('/features') }}">Features</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('services') ? 'active' : '' }}" href="{{ url('/services') }}">Services</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('testimonials') ? 'active' : '' }}" href="{{ url('/testimonials') }}">Testimonials</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ Request::is('contact') ? 'active' : '' }}" href="{{ url('/contact') }}">Contact Us</a>
+</li>
+
             </ul>
           </div>
 
@@ -106,8 +121,10 @@ https://templatemo.com/tm-586-scholar
 
   <!-- Background Video -->
   <video autoplay muted loop playsinline class="position-absolute w-100 h-100 object-fit-cover" style="z-index:-1; object-fit:cover;">
-    <source src="your-video.mp4" type="video/mp4">
+    <source src="assets/images/banner bg.mp4" type="video/mp4">
     Your browser does not support the video tag.
+
+
   </video>
 
   <!-- Overlay -->
@@ -122,18 +139,21 @@ https://templatemo.com/tm-586-scholar
 
         <!-- Main Title -->
         <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInUp">
-          With <span class="text-warning">IWaiter</span>, mjdb
-        </h1>
+          <span class="text-warning">IWaiter</span> Say goodbye to traditional waiters .
 
-        <!-- Subtitle -->
+    {{--     <!-- Subtitle -->
         <p class="lead mb-5 animate__animated animate__fadeInUp animate__delay-1s">
           Say goodbye to traditional waiters – order faster, easier, and smarter with our iPad-powered service.
-        </p>
+        </p> --}}
 
         <!-- Buttons -->
-        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
-          <a href="#features" class="btn btn-warning btn-lg px-4 rounded-pill shadow">Explore Features</a>
-          <a href="#demo" class="btn btn-outline-light btn-lg px-4 rounded-pill shadow"><i class="fa fa-play me-2"></i> Watch Demo</a>
+        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+         <a href="{{ url('/features') }}" class="btn btn-warning btn-lg px-4 rounded-pill shadow">
+  Explore Features
+</a>
+
+
+          
         </div>
       </div>
     </div>
