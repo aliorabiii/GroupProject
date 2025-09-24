@@ -13,24 +13,28 @@ class AdminManagementController extends Controller
     public function index()
     {
         $users = User::all();
-        $roles = Role::whereNotIn('name', ['super-admin'])->pluck('name', 'name'); // Exclude super-admin
+
+        // Include all roles except 'super-admin' for normal users
+        $roles = Role::pluck('name', 'name');
+
         return view('superadmin.admins.index', compact('users', 'roles'));
     }
 
     // Show create user form
     public function create()
     {
-        $this->authorizeSuperAdmin();
+        
 
-        // Only roles except super-admin
-        $roles = Role::whereNotIn('name', ['super-admin'])->pluck('name', 'name');
+        // Super-admin can assign any role including super-admin
+        $roles = Role::pluck('name', 'name');
+
         return view('superadmin.admins.create', compact('roles'));
     }
 
     // Store new user
     public function store(Request $request)
     {
-        $this->authorizeSuperAdmin();
+        
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -38,6 +42,11 @@ class AdminManagementController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'role' => 'required|string|exists:roles,name',
         ]);
+
+        // Ensure only super-admin can assign 'super-admin'
+        if ($request->role === 'super-admin' && !auth()->user()->hasRole('super-admin')) {
+            return redirect()->back()->withErrors(['role' => 'Unauthorized to assign this role.']);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -54,48 +63,55 @@ class AdminManagementController extends Controller
     // Show edit user form
     public function edit(User $admin)
     {
-        $this->authorizeSuperAdmin();
+        
 
-        $roles = Role::whereNotIn('name', ['super-admin'])->pluck('name', 'name');
+        $roles = Role::pluck('name', 'name'); // Super-admin can assign any role
+
         return view('superadmin.admins.edit', compact('admin', 'roles'));
     }
 
     // Update user
     public function update(Request $request, User $admin)
-{
-    $this->authorizeSuperAdmin();
+    {
+        
 
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email,' . $admin->id,
-        'password' => 'nullable|string|min:6|confirmed',
-        'role' => 'required|string|exists:roles,name', // Role must exist
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $admin->id,
+            'password' => 'nullable|string|min:6|confirmed',
+            'role' => 'required|string|exists:roles,name',
+        ]);
 
-    // Update basic info
-    $admin->update([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => $request->filled('password') ? Hash::make($request->password) : $admin->password,
-    ]);
+        // Prevent non-super-admin from assigning super-admin
+        if ($request->role === 'super-admin' && !auth()->user()->hasRole('super-admin')) {
+            return redirect()->back()->withErrors(['role' => 'Unauthorized to assign this role.']);
+        }
 
-    // Sync role (replace old role with new)
-    $admin->syncRoles([$request->role]);
+        $admin->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $admin->password,
+        ]);
 
-    return redirect()->route('superadmin.admins.index')
-        ->with('success', 'Admin updated successfully!');
-}
+        $admin->syncRoles([$request->role]);
 
+        return redirect()->route('superadmin.admins.index')
+            ->with('success', 'Admin updated successfully!');
+    }
 
     // Delete user
     public function destroy(User $admin)
     {
-        if ($admin->hasRole('super-admin')) {
+        
+
+        // Prevent deleting self
+        if ($admin->id === auth()->id()) {
             return redirect()->route('superadmin.admins.index')
-                ->with('error', 'Cannot delete Super Admin!');
+                ->with('error', 'You cannot delete yourself!');
         }
 
         $admin->delete();
+
         return redirect()->route('superadmin.admins.index')
             ->with('success', 'Admin deleted successfully!');
     }
@@ -103,7 +119,7 @@ class AdminManagementController extends Controller
     // Add new role dynamically
     public function addRole(Request $request)
     {
-        $this->authorizeSuperAdmin();
+       
 
         $request->validate([
             'role_name' => 'required|string|max:50|unique:roles,name',

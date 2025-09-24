@@ -74,66 +74,42 @@ https://templatemo.com/tm-586-scholar
 <div class="section bg-dark text-warning py-5">
     <div class="container">
         <div class="row">
+            {{-- Accordion Column --}}
             <div class="col-lg-6 offset-lg-1">
                 <div class="accordion" id="accordionExample">
+                    @php
+                        $accordion = json_decode($about->accordion_json ?? '[]', true) ?? [];
+                    @endphp
+
+                    @foreach($accordion as $index => $item)
                     <div class="accordion-item bg-dark border-warning mb-2">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button bg-dark text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Where shall we begin?
+                        <h2 class="accordion-header" id="heading{{ $index }}">
+                            <button class="accordion-button {{ $index != 0 ? 'collapsed' : '' }} bg-dark text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}" aria-expanded="{{ $index == 0 ? 'true' : 'false' }}" aria-controls="collapse{{ $index }}">
+                                {{ $item['question'] ?? '' }}
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div id="collapse{{ $index }}" class="accordion-collapse collapse {{ $index == 0 ? 'show' : '' }}" aria-labelledby="heading{{ $index }}" data-bs-parent="#accordionExample">
                             <div class="accordion-body text-light">
-                                Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor incididunt ut labore consectetur 
-                                adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
+                                {!! $item['answer'] ?? '' !!}
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item bg-dark border-warning mb-2">
-                        <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed bg-dark text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                How do we work together?
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                            <div class="accordion-body text-light">
-                                Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor incididunt ut labore consectetur adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item bg-dark border-warning mb-2">
-                        <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed bg-dark text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Why SCHOLAR is the best?
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                            <div class="accordion-body text-light">
-                                There are more than one hundred responsive HTML templates to choose from <strong>Template</strong>Mo website. You can browse by different tags or categories.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item bg-dark border-warning mb-2">
-                        <h2 class="accordion-header" id="headingFour">
-                            <button class="accordion-button collapsed bg-dark text-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                Do we get the best support?
-                            </button>
-                        </h2>
-                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                            <div class="accordion-body text-light">
-                                You can also search on Google with specific keywords such astemplatemo business templates, templatemo gallery templates, admin dashboard templatemo, 3-column templatemo, etc.</code>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
+
+            {{-- About Text Column --}}
             <div class="col-lg-5 align-self-center">
                 <div class="section-heading text-warning">
                     <h6>About Us</h6>
-                    <h2>What make us the best academy online?</h2>
-                    <p class="text-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravid risus commodo.</p>
+                    <h2>{{ $about->title ?? 'What make us the best academy online?' }}</h2>
+                    <p class="text-light">
+                        {!! $about->content ?? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravid risus commodo.' !!}
+                    </p>
                     <div class="main-button">
-                        <a href="#" class="btn btn-warning text-dark">Discover More</a>
+                        @if($about->cta_text && $about->cta_link)
+                            <a href="{{ $about->cta_link }}" class="btn btn-warning text-dark">{{ $about->cta_text }}</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -141,6 +117,14 @@ https://templatemo.com/tm-586-scholar
     </div>
 </div>
 
+
+@role('abouteditor|super-admin')
+    <div class="mt-4">
+        <a href="{{ route('about.edit') }}" class="btn btn-warning">
+            <i class="bi bi-pencil-square"></i> Edit About Page
+        </a>
+    </div>
+@endrole
 
 <!-- Footer -->
 <!-- Footer -->

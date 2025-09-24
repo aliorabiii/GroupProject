@@ -41,12 +41,12 @@
             <input type="password" name="password_confirmation" required class="border px-2 py-1 w-full rounded">
         </div>
 
-        {{-- Role dropdown (exclude 'admin') --}}
+        {{-- Role dropdown (allow all roles temporarily) --}}
         <div class="mb-3">
             <label class="block font-medium">Role</label>
             <select name="role" class="border px-2 py-1 w-full rounded" required>
                 <option value="">-- Select Role --</option>
-                @foreach($roles->reject(fn($role) => $role === 'admin') as $role)
+                @foreach($roles as $role)
                     <option value="{{ $role }}" {{ old('role') === $role ? 'selected' : '' }}>
                         {{ ucfirst($role) }}
                     </option>
@@ -59,19 +59,17 @@
         </button>
     </form>
 
-    {{-- Add New Role (Super Admin only, separate form) --}}
-    @if(auth()->user()->hasRole('super-admin'))
+    {{-- Add New Role form (temporarily allow anyone) --}}
     <div class="mt-6 p-4 border rounded bg-gray-50">
         <h2 class="font-semibold mb-2">Add New Role</h2>
         <form action="{{ route('superadmin.roles.store') }}" method="POST" class="flex gap-2 items-center">
             @csrf
-            <input type="text" name="role_name" placeholder="New role name" class="border px-2 py-1 rounded flex-1" required>
+            <input type="text" name="role_name" placeholder="New role name (e.g., super-admin)" class="border px-2 py-1 rounded flex-1" required>
             <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700">Add Role</button>
         </form>
         @error('role_name')
             <p class="text-red-600 mt-2">{{ $message }}</p>
         @enderror
     </div>
-    @endif
 </div>
 @endsection

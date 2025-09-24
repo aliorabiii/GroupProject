@@ -5,42 +5,37 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\RoleController;
 
-Route::get('/index', function () {
-    return view('pages.index');
-});
-Route::get('/about', function () {
-    return view('pages.about');
-});
-Route::get('/contact', function () {
-    return view('pages.contact');
-});
-Route::get('/features', function () {
-    return view('pages.features');
-});
-Route::get('/services', function () {
-    return view('pages.services');
-});
-Route::get('/testimonials', function () {
-    return view('pages.testimonials');
-});
-// Home / Welcome page
-Route::get('/', function () {
-    return view('welcome');
-});
 
-// Dashboard - accessible only to authenticated and verified users
+use App\Http\Controllers\AboutController;
+
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/about/edit', [AboutController::class, 'edit'])->name('about.edit');
+Route::post('/about/update', [AboutController::class, 'update'])->name('about.update');
+
+
+
+
+Route::get('/index', function () { return view('pages.index'); });
+Route::get('/contact', function () { return view('pages.contact'); });
+Route::get('/features', function () { return view('pages.features'); });
+Route::get('/services', function () { return view('pages.services'); });
+Route::get('/testimonials', function () { return view('pages.testimonials'); });
+Route::get('/', function () { return view('welcome'); });
+
+// ------------------------
+// Dashboard - authenticated & verified users
+// ------------------------
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard'); // Make sure dashboard.blade.php uses <x-app-layout>
+        return view('dashboard');
     })->name('dashboard');
 });
 
 // ------------------------
-// Superadmin routes - only for users with 'super-admin' role
-// Uses Spatie 'role' middleware alias
+// TEMPORARY: Superadmin routes - accessible to ANY authenticated user
+// Remove 'role:super-admin' middleware for now
 // ------------------------
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
-    // Admin Management
     Route::get('/superadmin/admins', [AdminManagementController::class, 'index'])
         ->name('superadmin.admins.index');
     Route::get('/superadmin/admins/create', [AdminManagementController::class, 'create'])
@@ -53,14 +48,14 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
         ->name('superadmin.admins.update');
     Route::delete('/superadmin/admins/{admin}', [AdminManagementController::class, 'destroy'])
         ->name('superadmin.admins.destroy');
+
+    Route::post('/superadmin/roles', [RoleController::class, 'store'])
+        ->name('superadmin.roles.store');
 });
 
 
-Route::post('/superadmin/roles', [RoleController::class, 'store'])
-    ->name('superadmin.roles.store')
-    ->middleware('role:super-admin');
 // ------------------------
-// Profile routes - accessible to any authenticated user
+// Profile routes - authenticated users
 // ------------------------
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
